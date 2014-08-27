@@ -227,11 +227,24 @@ def connect_graph_through_sync(baseline_db, pre_sync_db, post_sync_db):
         print respawned_id + "\t" + str(len(old_fp_domains)) + "\t" + str(len(new_fp_domains)) + "\t" + str(len(full_fp_domains))
 
 if __name__ == "__main__":
-    P4 = os.path.join(DATA_DIR, 'alexa3k_05062014_fresh_triton.sqlite')
-    P6 = os.path.join(DATA_DIR, 'alexa3k_05072014_recrawl_triton.sqlite')
+    P4 = os.path.join(DATA_DIR, 'P4_alexa10k_05032014_fresh.sqlite')
+    P6 = os.path.join(DATA_DIR, 'P6_alexa3k_05062014_fresh.sqlite')
+    P8 = os.path.join(DATA_DIR, 'P8_alexa3k_05062014_fresh.sqlite')
+    P9 = os.path.join(DATA_DIR, 'P9_alexa3k_05072014_flash.sqlite')
+    P10 = os.path.join(DATA_DIR, 'P10_alexa3k_05072014_localStorage.sqlite')
+    P11 = os.path.join(DATA_DIR, 'P11_alexa3k_05072014_HTTP_cookies.sqlite')
+    P14 = os.path.join(DATA_DIR, 'P14_alexa3k_05122014_DNT.sqlite')
+    P15 = os.path.join(DATA_DIR, 'P15_alexa3k_05122014_DNT.sqlite')
+    P16 = os.path.join(DATA_DIR, 'P16_alexa3k_05122014_3PCookiesNever.sqlite')
+    P17 = os.path.join(DATA_DIR, 'P17_alexa3k_05122014_3PCookiesNever.sqlite')
+    P21 = os.path.join(DATA_DIR, 'P21_alexa3k_06132014_opt-out.sqlite')
+    P22 = os.path.join(DATA_DIR, 'P22_alexa3k_06132014_opt-out.sqlite')
     
-    # 2 crawl method
-    #output_sync_measurements(triton, kingpin) #3p allow
-    output_sync_measurements(P4, P6) #block 3p
-    
-    #connect_graph_through_sync(triton1, kingpin1, kingpin3)
+    # cookie sync
+    output_sync_measurements(P6, P8) #allow 3P
+    #output_sync_measurements(P16, P17) #block 3P
+    #output_sync_measurements(P14, P15) #DNT
+    #output_sync_measurements(P21, P22) #Opt-Out
+
+    # Respawn and sync
+    #connect_graph_through_sync(P6, P8, P9)

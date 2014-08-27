@@ -18,20 +18,29 @@ quite different. The Leuven crawler isolates state between page visits and was
 used for all parallel crawls. The Princeton crawler keeps consistent state and
 was used for all sequential crawls.
 
-**Sequential** _automation_ contains a clone of [v0.2.0](https://github.com/citp/OpenWPM/releases) of
-OpenWPM and the necessary crawling scripts. You can run these crawls with `python sequential_crawl.py`
+**Sequential**  Version [v0.2.0](https://github.com/citp/OpenWPM/releases) of
+OpenWPM is contained in *OpenWPM* along with the necessary crawling scripts. 
+You can run these crawls from that directory with `python sequential_crawl.py`
 
-**Parallel** Coming soon
+**Parallel** --Coming soon--
 
 Analysis
 --------
+The analysis performed in the paper can be recreated with the following analysis
+scripts. Once the data is downloaded, update the scripts to point to your download
+location, and find the analysis output either printed to stdout or to a summary file.
 
-**Canvas Fingerprinting** Coming soon
+**Canvas Fingerprinting** --Coming soon--
 
-**Cookie Repawning** Cookie respawning analysis scripts are included in _analysis_
+**Cookie Repawning** --Incomplete-- 
+- *ccs_respawn_measurements.py* - HTTP Cookies respawned from Flash Objects
 
-**Cookie Syncing** Cookie syncing analysis scripts are included in _analysis_
-
+**Cookie Syncing** - these analysis scripts and supporting utilities are included 
+in *analysis*
+- *ccs_sync_measurements.py* - cookie sync analysis + cookie respawn and sync analysis
+- *census_util* - supporting utilities for all scripts
+- *extract_cookie_ids.py* - extracts id cookies from pairs of databases
+- *extract_id_knowledge.py* - supporting algorithms for sync analysis
 
 Visualization
 -------------
