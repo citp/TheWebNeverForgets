@@ -32,7 +32,7 @@ location, and find the analysis output either printed to stdout or to a summary 
 
 **Canvas Fingerprinting** --Coming soon--
 
-**Cookie Respawning** --Incomplete-- 
+**Cookie Respawning**
 - *ccs_respawn_measurements.py* - HTTP Cookies respawned from Flash Objects
 
 **Cookie Syncing** - these analysis scripts and supporting utilities are included 
