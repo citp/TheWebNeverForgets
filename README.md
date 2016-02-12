@@ -30,7 +30,7 @@ crawler in parallel with different settings.
 Analysis
 --------
 The analysis performed in the paper can be recreated with the following analysis
-scripts. Once the data is downloaded, update the scripts to point to your download
+scripts. Once the [data](https://securehomes.esat.kuleuven.be/~gacar/persistent/#data) is downloaded, update the scripts to point to your download
 location, and find the analysis output either printed to stdout or to a summary file.
 
 **Canvas Fingerprinting** 
@@ -68,4 +68,4 @@ OpenWPM's dependencies can be found on the [repo wiki](https://github.com/citp/O
 
     sudo pip install numpy tld publicsuffix networkx 
 
-modCrawler's dependencies can be found in the requirements file and setup.sh. We strongly advise you to run modCrawler in a virtual machine or a container.
+modCrawler's dependencies can be found in the [requirements.txt](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/etc/requirements.txt) file and [setup.sh script](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/setup.sh). We strongly advise you to run modCrawler in a virtual machine or a container. You must run [`setup.sh`](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/setup.sh) script to install modCrawler. Please check [modCrawler](https://github.com/fpdetective/modCrawler) repository for updates.
