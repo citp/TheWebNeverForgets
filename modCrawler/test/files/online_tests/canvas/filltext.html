@@ -1,0 +1,17 @@
+<!doctype html>
+<!-- Adapted from https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement -->
+<html>
+<head>
+<title>toDataURL example</title>
+  <script type="application/javascript">
+    function fill_text() {
+     var canvas = document.getElementById("canvas");
+     var ctx = canvas.getContext("2d");
+     ctx.fillText("TEST-1234567890", 10, 50);
+    }
+    
+  </script>
+ </head>
+ <body onload="fill_text()">
+   <canvas id="canvas" width="100" height="100"></canvas>
+ </body></html>

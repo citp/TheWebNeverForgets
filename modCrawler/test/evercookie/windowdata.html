@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- Extracted from samy.pl source code -->
+<html>
+<head>
+<title>window data example</title>
+  <script type="application/javascript">
+	function replace(str, key, value) {
+		if (str.indexOf('&' + key + '=') > -1 || str.indexOf(key + '=') == 0)
+		{
+			// find start
+			var idx = str.indexOf('&' + key + '=');
+			if (idx == -1)
+				idx = str.indexOf(key + '=');
+	
+			// find end
+			var end = str.indexOf('&', idx + 1);
+			var newstr;
+			if (end != -1)
+				newstr = str.substr(0, idx) + str.substr(end + (idx ? 0 : 1)) + '&' + key + '=' + value;
+			else
+				newstr = str.substr(0, idx) + '&' + key + '=' + value;
+	
+			return newstr;
+		}
+		else
+			return str + '&' + key + '=' + value;
+	}
+	function getFromStr(name, text) {
+		if (typeof text != 'string')
+			return;
+			
+		var nameEQ = name + "=";
+		var ca = text.split(/[;&]/);
+		for (var i = 0; i < ca.length; i++)
+		{
+			var c = ca[i];
+			while (c.charAt(0) == ' ')
+				c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0)
+				return c.substring(nameEQ.length, c.length);
+		}
+	}
+    function set_windowData() {
+		window.name = replace(window.name, 'testkey', 'Test-0123456789');
+		document.write("testkey:" + getFromStr('testkey', window.name));
+     }
+  </script>
+ </head>
+ <body onload="set_windowData()">
+ </body></html>

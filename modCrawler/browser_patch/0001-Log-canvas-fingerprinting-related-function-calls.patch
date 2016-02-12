@@ -1,0 +1,132 @@
+From 753391f69b54cc8793394145c4b7c4e23773d39c Mon Sep 17 00:00:00 2001
+From: Gunes Acar <gunes.acar@esat.kuleuven.be>
+Date: Wed, 10 Feb 2016 19:51:04 +0100
+Subject: [PATCH] Log canvas fingerprinting related function calls. Add custom
+ .mozconfig file.
+
+---
+ .mozconfig-ffstd                        |  9 +++++++++
+ dom/canvas/CanvasRenderingContext2D.cpp |  6 ++++++
+ dom/canvas/CanvasUtils.h                | 12 ++++++++++++
+ dom/html/HTMLCanvasElement.cpp          |  7 ++++++-
+ 4 files changed, 33 insertions(+), 1 deletion(-)
+ create mode 100644 .mozconfig-ffstd
+
+diff --git a/.mozconfig-ffstd b/.mozconfig-ffstd
+new file mode 100644
+index 0000000..fd6e71a
+--- /dev/null
++++ b/.mozconfig-ffstd
+@@ -0,0 +1,9 @@
++mk_add_options MOZ_MAKE_FLAGS="-j8"
++ac_add_options --enable-optimize --disable-debug
++ac_add_options --disable-tests
++mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-static
++ac_add_options --enable-application=browser
++mk_add_options AUTOCLOBBER=1
++ac_add_options --enable-application=browser
++ac_add_options --enable-update-channel=release
++ac_add_options --enable-official-branding
+diff --git a/dom/canvas/CanvasRenderingContext2D.cpp b/dom/canvas/CanvasRenderingContext2D.cpp
+index f457355..c502efe 100644
+--- a/dom/canvas/CanvasRenderingContext2D.cpp
++++ b/dom/canvas/CanvasRenderingContext2D.cpp
+@@ -3300,6 +3300,7 @@ CanvasRenderingContext2D::FillText(const nsAString& text, double x,
+                                    const Optional<double>& maxWidth,
+                                    ErrorResult& error)
+ {
++  LogCanvasCall("CanvasRenderingContext2D.cpp", "FillText", NS_ConvertUTF16toUTF8(text).get());
+   error = DrawOrMeasureText(text, x, y, maxWidth, TextDrawOperation::FILL, nullptr);
+ }
+ 
+@@ -3309,6 +3310,7 @@ CanvasRenderingContext2D::StrokeText(const nsAString& text, double x,
+                                      const Optional<double>& maxWidth,
+                                      ErrorResult& error)
+ {
++  LogCanvasCall("CanvasRenderingContext2D.cpp", "StrokeText", NS_ConvertUTF16toUTF8(text).get());
+   error = DrawOrMeasureText(text, x, y, maxWidth, TextDrawOperation::STROKE, nullptr);
+ }
+ 
+@@ -4643,6 +4645,8 @@ CanvasRenderingContext2D::DrawImage(const CanvasImageSource& image,
+                          imgSize);
+   }
+ 
++  LogCanvasCall("CanvasRenderingContext2D.cpp", "DrawImage", "");
++  printf("x:%d y%d w:%.1f h:%.1f\n", dx, dy, imgSize.width, imgSize.height);
+   RedrawUser(gfxRect(dx, dy, dw, dh));
+ }
+ 
+@@ -5151,6 +5155,8 @@ CanvasRenderingContext2D::GetImageData(JSContext* aCx, double aSx,
+   }
+   MOZ_ASSERT(array);
+ 
++  LogCanvasCall("CanvasRenderingContext2D.cpp", "GetImageData", "");
++  printf("x:%d y:%d w:%d h:%d\n", x, y, w, h);
+   RefPtr<ImageData> imageData = new ImageData(w, h, *array);
+   return imageData.forget();
+ }
+diff --git a/dom/canvas/CanvasUtils.h b/dom/canvas/CanvasUtils.h
+index b1237b6..f1344a1 100644
+--- a/dom/canvas/CanvasUtils.h
++++ b/dom/canvas/CanvasUtils.h
+@@ -13,6 +13,18 @@
+ 
+ class nsIPrincipal;
+ 
++// Log canvas fingerprinting related function calls
++inline void LogCanvasCall(const char* cppFileName, const char* funcName, const char* logStr){
++	uint32_t lineNo = 0;
++	nsAutoString jsFileName;
++	JSContext* aCx = nsContentUtils::GetCurrentJSContext();
++	if (!aCx || !nsJSUtils::GetCallingLocation(aCx, jsFileName, &lineNo)) {
++		jsFileName.AssignLiteral("unknown");
++	}
++	printf("FPD\t%s\t%s\t%s\t%d\t%s\t\n", cppFileName, funcName,
++			NS_ConvertUTF16toUTF8(jsFileName).get(), lineNo, logStr);
++}
++
+ namespace mozilla {
+ 
+ namespace dom {
+diff --git a/dom/html/HTMLCanvasElement.cpp b/dom/html/HTMLCanvasElement.cpp
+index d1133df..79a2e6b 100644
+--- a/dom/html/HTMLCanvasElement.cpp
++++ b/dom/html/HTMLCanvasElement.cpp
+@@ -43,6 +43,7 @@
+ #include "ActiveLayerTracker.h"
+ #include "WebGL1Context.h"
+ #include "WebGL2Context.h"
++#include "CanvasUtils.h"
+ 
+ using namespace mozilla::layers;
+ using namespace mozilla::gfx;
+@@ -626,7 +627,9 @@ HTMLCanvasElement::ToDataURL(const nsAString& aType, JS::Handle<JS::Value> aPara
+     return NS_ERROR_DOM_SECURITY_ERR;
+   }
+ 
+-  return ToDataURLImpl(aCx, aType, aParams, aDataURL);
++  nsresult rv = ToDataURLImpl(aCx, aType, aParams, aDataURL);
++  LogCanvasCall("HTMLCanvasElement.cpp", "ToDataURL", NS_ConvertUTF16toUTF8(aDataURL).get());
++  return rv;
+ }
+ 
+ void
+@@ -691,6 +694,7 @@ HTMLCanvasElement::ExtractData(nsAString& aType,
+                                const nsAString& aOptions,
+                                nsIInputStream** aStream)
+ {
++  LogCanvasCall("HTMLCanvasElement.cpp", "ExtractData", "-");
+   return ImageEncoder::ExtractData(aType,
+                                    aOptions,
+                                    GetSize(),
+@@ -822,6 +826,7 @@ HTMLCanvasElement::MozGetAsFile(const nsAString& aName,
+       !nsContentUtils::IsCallerChrome()) {
+     return NS_ERROR_DOM_SECURITY_ERR;
+   }
++  LogCanvasCall("HTMLCanvasElement.cpp", "MozGetAsFile", "-");
+ 
+   return MozGetAsBlobImpl(aName, aType, aResult);
+ }
+-- 
+1.9.1
+

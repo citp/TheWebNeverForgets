@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<title>indexedDB example</title>
+  <script type="application/javascript">
+	(function() {
+		const DB_NAME = 'evercookies';
+  		const DB_VERSION = 1; // Use a long long for this value (don't use a float)
+  		const DB_STORE_NAME = 'evercookie';
+  		const TEST_KEY = 'testkey';
+  		const TEST_VALUE = 'Test-0123456789';
+
+		var _global_indexedDB;
+	    window.indexedDB = window.indexedDB || window.webkit_global_indexedDB || window.moz_global_indexedDB;
+	    if (window.indexedDB) {
+		    if ('webkit_global_indexedDB' in window) {
+		      window.IDBTransaction = window.webkitIDBTransaction;
+		      window.IDBKeyRange = window.webkitIDBKeyRange;
+		    }
+		    _global_indexedDB = {};
+		    _global_indexedDB.db = null;
+		    _global_indexedDB.onerror = function(e) {
+		      console.log(e);
+		    };
+		    _global_indexedDB.open = function() {
+		      var req = indexedDB.open(DB_NAME, DB_VERSION);
+	          req.onsuccess = function (evt) {
+      			_global_indexedDB.db = this.result;
+			  };
+	          req.onupgradeneeded = function (evt) {
+      		  	var store = evt.currentTarget.result.createObjectStore(
+        			DB_STORE_NAME, {keyPath: "name"});
+    		  };
+		      req.onerror = _global_indexedDB.onerror;
+		    };
+			_global_indexedDB.deleteEvercookie = function(name, callback) {
+		      var req = _global_indexedDB.db.transaction([DB_STORE_NAME], "readwrite")
+		      					.objectStore(DB_STORE_NAME).delete(name);
+		      req.onerror = _global_indexedDB.onerror;
+		      if (typeof callback == 'function')
+		      	req.onsuccess = callback;
+		    };
+		    _global_indexedDB.writeEvercookie = function(name, value, callback) {
+		      var req = _global_indexedDB.db.transaction([DB_STORE_NAME], "readwrite")
+		      					.objectStore(DB_STORE_NAME).put({"name": name, "value": value});
+		      req.onerror = _global_indexedDB.onerror;
+		      if (typeof callback == 'function')
+		      	req.onsuccess = callback;
+		    };
+		    _global_indexedDB.readEvercookie = function(name, callback) {
+		      var req = _global_indexedDB.db.transaction([DB_STORE_NAME], "readwrite")
+								.objectStore(DB_STORE_NAME).get(name);
+		      req.onerror = _global_indexedDB.onerror;
+	  	      req.onsuccess = function(event) {
+	  	      	if (typeof event.target.result != 'undefined' && typeof callback == 'function')
+	  	      		req.onsuccess = callback(event.target.result.value);
+	  	      };
+		    };
+		    _global_indexedDB.open();
+		} else {
+			document.write("Indexed DB not present in this browser.");
+		}
+	    function test_indexedDB() {
+			_global_indexedDB.writeEvercookie(TEST_KEY, TEST_VALUE, function() {
+				_global_indexedDB.readEvercookie(TEST_KEY, function(value) {
+			        document.write(TEST_KEY + ": " + value);
+			        document.close();
+				});
+			});
+	     }
+	     window.onload = function() {
+	     	setTimeout(test_indexedDB, 200);
+	     };
+	})();
+  </script>
+ </head> 
+</html>

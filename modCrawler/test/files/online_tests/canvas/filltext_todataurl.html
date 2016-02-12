@@ -1,0 +1,32 @@
+<!doctype html>
+<!-- Adapted from https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement -->
+<html>
+<head>
+<title>toDataURL example</title>
+  <script type="application/javascript">
+    function draw_and_get() {
+     var canvas = document.getElementById("canvas");
+     var ctx = canvas.getContext("2d");
+    
+     ctx.fillStyle = "rgb(200,0,0)";
+     ctx.fillRect (10, 10, 55, 50);
+    
+     ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+     ctx.fillRect (30, 30, 55, 50);
+     ctx.fillText("TEST-1234567890", 10, 50);
+     var new_img = document.createElement("img");
+     new_img.src = canvas.toDataURL();
+     document.body.appendChild(new_img);
+     
+    }
+    
+  </script>
+  <style>
+    img, canvas{
+          border: 1px solid red;
+    }
+  </style>
+ </head>
+ <body onload="draw_and_get()">
+   <canvas id="canvas" width="100" height="100"></canvas>
+ </body></html>

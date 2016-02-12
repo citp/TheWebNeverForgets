@@ -1,0 +1,18 @@
+<!doctype html>
+<!-- Extracted from samy.pl source code -->
+<html>
+<head>
+<title>sessionData example</title>
+  <script type="application/javascript">
+    function set_sessionData() {
+    	if (window.sessionStorage) {
+			sessionStorage.setItem('testkey', 'Test-0123456789');
+			document.write("testkey:" + sessionStorage.getItem('testkey'));
+		} else {
+			document.write("session storage not present in this browser.");
+		}
+     }
+  </script>
+ </head>
+ <body onload="set_sessionData()">
+ </body></html>

@@ -1,0 +1,14 @@
+tld
+pyamf
+Cheetah
+pyOpenssl>=0.15
+simplejson
+psutil
+pypng
+mitmproxy>=0.11.3
+numpy
+selenium>=2.39.0
+werkzeug
+Pillow
+paramiko
+pyvirtualdisplay
