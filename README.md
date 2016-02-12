@@ -23,9 +23,8 @@ OpenWPM is contained in *OpenWPM* along with the necessary crawling scripts.
 You can run these crawls from that directory with `python sequential_crawl.py`
 
 **Parallel** A copy of [modCrawler](https://github.com/fpdetective/modCrawler)
-included in the *modCrawler* directory. Please check the command line options
-[modCrawler repository](https://github.com/fpdetective/modCrawler) for running the 
-crawler in parallel with different settings.
+included in the *modCrawler* directory. Please check [command line options](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/README.md#command-line-parameters)
+for running the crawler with different settings.
 
 Analysis
 --------
@@ -68,4 +67,4 @@ OpenWPM's dependencies can be found on the [repo wiki](https://github.com/citp/O
 
     sudo pip install numpy tld publicsuffix networkx 
 
-modCrawler's dependencies can be found in the [requirements.txt](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/etc/requirements.txt) file and [setup.sh script](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/setup.sh). We strongly advise you to run modCrawler in a virtual machine or a container. You must run [`setup.sh`](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/setup.sh) script to install modCrawler. Please check [modCrawler](https://github.com/fpdetective/modCrawler) repository for updates.
+modCrawler's dependencies can be found in the [requirements.txt](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/etc/requirements.txt) file and [setup.sh script](https://github.com/citp/TheWebNeverForgets/blob/master/modCrawler/setup.sh). *setup.sh* script will install all dependencies automatically. We strongly advise you to run modCrawler in a virtual machine or a container such as LXC. Please check [modCrawler's own repository](https://github.com/fpdetective/modCrawler) for updates and bug reports.
