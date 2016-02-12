@@ -22,7 +22,10 @@ was used for all sequential crawls.
 OpenWPM is contained in *OpenWPM* along with the necessary crawling scripts. 
 You can run these crawls from that directory with `python sequential_crawl.py`
 
-**Parallel** --Coming soon--
+**Parallel** A copy of [modCrawler](https://github.com/fpdetective/modCrawler)
+included in the *modCrawler* directory. Please check the command line options
+[modCrawler repository](https://github.com/fpdetective/modCrawler) for running the 
+crawler in parallel with different settings.
 
 Analysis
 --------
@@ -30,10 +33,15 @@ The analysis performed in the paper can be recreated with the following analysis
 scripts. Once the data is downloaded, update the scripts to point to your download
 location, and find the analysis output either printed to stdout or to a summary file.
 
-**Canvas Fingerprinting** --Coming soon--
+**Canvas Fingerprinting** 
+- *modCrawler/analysis/canvas.py* - The crawl report generated automatically includes
+detailed information about the detected canvas fingerprinters,
+evercookies etc.
 
 **Cookie Respawning**
 - *ccs_respawn_measurements.py* - HTTP Cookies respawned from Flash Objects
+- *modCrawler/analysis/extract_evercookies.py* - HTTP Cookies respawned from
+Flash Objects for the parallel crawler.
 
 **Cookie Syncing** - these analysis scripts and supporting utilities are included 
 in *analysis*
@@ -42,11 +50,16 @@ in *analysis*
 - *extract_cookie_ids.py* - extracts id cookies from pairs of databases
 - *extract_id_knowledge.py* - supporting algorithms for sync analysis
 
+
+
 Visualization
 -------------
 
 Code for the generation of graphs, including those in our [blogpost](https://freedom-to-tinker.com/blog/englehardt/the-hidden-perils-of-cookie-syncing/)
 is included. Some manual visualization done in [Gephi](https://gephi.github.io/)
+
+modCrawler's crawl report will embed the images used by canvas fingerprinting scripts such as the following:
+<img src="https://raw.githubusercontent.com/fpdetective/modCrawler/master/etc/report.png" width="600px" alt="Report screenshot" />
 
 Dependencies
 ------------
@@ -54,3 +67,5 @@ Dependencies
 OpenWPM's dependencies can be found on the [repo wiki](https://github.com/citp/OpenWPM/wiki/Setting-up-OpenWPM#manual-installation-and-dependencies)
 
     sudo pip install numpy tld publicsuffix networkx 
+
+modCrawler's dependencies can be found in the requirements file and setup.sh. We strongly advise you to run modCrawler in a virtual machine or a container.
