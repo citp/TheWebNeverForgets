@@ -25,7 +25,7 @@ Below we give a description of the parameters that are passed to the `agents.py`
 
 Example:
 * To crawl top 100 urls in the etc/top-1m.csv file using 10 parallel crawlers (Flash disabled).
-  * ```python crawl.py --urls etc/top-1m.csv --max_rank 100 max_proc 10 --flash 0```
+  * ```python crawl.py --urls etc/top-1m.csv --max_rank 100 --max_proc 10 --flash 0```
 
 * To crawl urls between rank 100-1000 in the etc/top-1m.csv file using 5 parallel crawlers (Flash enabled).
   * ```python crawl.py --urls etc/top-1m.csv --max_rank 1000 --min_rank 100 max_proc 5```
